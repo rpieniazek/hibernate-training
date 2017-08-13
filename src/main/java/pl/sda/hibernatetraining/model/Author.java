@@ -1,50 +1,63 @@
 package pl.sda.hibernatetraining.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
+@Entity
 public class Author implements Serializable {
 
-    protected Long id;
-    protected String nickName;
+  public final static String PERSONAL_DATA_PROPERTY = "personalData";
 
-    protected PersonalData personalData;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  protected Long id;
 
-    protected long version;
+  @Column(nullable = true, length = 30)
+  protected String nickName;
 
-    // for hibernate
-    public Author() {
+  @Embedded
+  @AttributeOverrides({
+  @AttributeOverride(name = "firstName", column = @Column(name = "FIRST_NAME", nullable = false) ),
+  @AttributeOverride(name = "lastName", column = @Column(name = "LAST_NAME", nullable = false) ) })
+  protected PersonalData personalData;
 
-    }
+  @Version
+  protected long version;
 
-    public Author(Long id, PersonalData personalData, String nickName, long version) {
-        this.id = id;
-        this.version = version;
-        this.personalData = personalData;
-        this.nickName = nickName;
-    }
+  // for hibernate
+  public Author() {
 
-    public Long getId() {
+  }
 
-        return this.id;
-    }
+  public Author(Long id, PersonalData personalData, String nickName, long version) {
+    this.id = id;
+    this.version = version;
+    this.personalData = personalData;
+    this.nickName = nickName;
+  }
 
-    public PersonalData getPersonalData() {
+  public Long getId() {
 
-        return this.personalData;
-    }
+    return this.id;
+  }
 
-    public String getNickName() {
+  public PersonalData getPersonalData() {
 
-        return this.nickName;
-    }
+    return this.personalData;
+  }
 
-    public long getVersion() {
+  public String getNickName() {
 
-        return this.version;
-    }
+    return this.nickName;
+  }
 
-    public void setVersion(long version) {
+  public long getVersion() {
 
-        this.version = version;
-    }
+    return this.version;
+  }
+
+  public void setVersion(long version) {
+
+    this.version = version;
+  }
 }

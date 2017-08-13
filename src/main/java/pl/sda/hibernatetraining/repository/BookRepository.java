@@ -1,14 +1,14 @@
 package pl.sda.hibernatetraining.repository;
 
 import org.springframework.stereotype.Repository;
+import pl.sda.hibernatetraining.model.Author;
 import pl.sda.hibernatetraining.model.Book;
+import pl.sda.hibernatetraining.model.PersonalData;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -31,9 +31,25 @@ public class BookRepository {
     public List<Book> findByPartialTitle(String title) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Book> criteriaQuery = criteriaBuilder.createQuery(Book.class);
+
+        Root<Book> books = criteriaQuery.from(Book.class);
+        criteriaQuery.where(criteriaBuilder.like(books.get("title"), title + "%"));
+
+        TypedQuery<Book> typedQuery = entityManager.createQuery(criteriaQuery);
+        return typedQuery.getResultList();
+    }
+
+    public List<Book> findByAuthorLastName(String authorName) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Book> criteriaQuery = criteriaBuilder.createQuery(Book.class);
         Root<Book> books = criteriaQuery.from(Book.class);
 
-        criteriaQuery.where(criteriaBuilder.like(books.get("title"), title + "%"));
+        Join<Book, Author> join = books.join(Book.AUTHORS);
+        Path<String> authorLastNamePath = join.get(Author.PERSONAL_DATA_PROPERTY).get(PersonalData.LAST_NAME_PARAMETER);
+        Expression<String> literal = criteriaBuilder.upper(criteriaBuilder.literal(authorName + "%"));
+        Predicate predicate = criteriaBuilder.like(criteriaBuilder.upper(authorLastNamePath), literal);
+
+        criteriaQuery.where(predicate);
 
         TypedQuery<Book> typedQuery = entityManager.createQuery(criteriaQuery);
         return typedQuery.getResultList();

@@ -27,4 +27,10 @@ public class BookService {
     public List<Book> findByPartialTitle(String title) {
         return bookRepository.findByPartialTitle(title);
     }
+
+    public List<Book> findByAuthorLastName(String author) {
+        return bookRepository.findByAuthorLastName(author);
+    }
+
+
 }

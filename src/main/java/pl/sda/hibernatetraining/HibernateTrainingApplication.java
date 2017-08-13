@@ -17,7 +17,7 @@ public class HibernateTrainingApplication {
 
     @PostConstruct
     private void init() {
-        List<Book> books = bookService.findByPartialTitle("W pus");
+        List<Book> books = bookService.findByAuthorLastName("Sien");
         books.forEach(book -> System.out.println(book.getTitle()));
     }
 
