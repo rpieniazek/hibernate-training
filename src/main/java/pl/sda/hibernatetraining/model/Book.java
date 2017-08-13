@@ -19,4 +19,8 @@ public class Book implements Serializable {
     // for hibernate
     public Book() {
     }
+
+    public Book(String title) {
+        this.title = title;
+    }
 }
