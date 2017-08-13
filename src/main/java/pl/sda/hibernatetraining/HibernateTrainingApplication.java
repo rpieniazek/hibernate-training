@@ -7,6 +7,7 @@ import pl.sda.hibernatetraining.model.Book;
 import pl.sda.hibernatetraining.service.BookService;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @SpringBootApplication
 public class HibernateTrainingApplication {
@@ -16,7 +17,8 @@ public class HibernateTrainingApplication {
 
     @PostConstruct
     private void init() {
-        bookService.save(new Book("W pustyni i w puszczy"));
+        List<Book> books = bookService.findByPartialTitle("W pus");
+        books.forEach(book -> System.out.println(book.getTitle()));
     }
 
     public static void main(String[] args) {
