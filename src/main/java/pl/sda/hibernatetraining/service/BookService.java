@@ -2,11 +2,16 @@ package pl.sda.hibernatetraining.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.sda.hibernatetraining.model.Author;
 import pl.sda.hibernatetraining.model.Book;
+import pl.sda.hibernatetraining.model.PersonalData;
 import pl.sda.hibernatetraining.repository.BookRepository;
+import pl.sda.hibernatetraining.repository.IAuthorRepository;
 import pl.sda.hibernatetraining.repository.IBookRepository;
 
 import javax.transaction.Transactional;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +25,8 @@ public class BookService {
     @Autowired
     private IBookRepository jpaBookRepository;
 
+    @Autowired
+    private IAuthorRepository authorRepository;
 
     public void save(Book book) {
         bookRepository.save(book);
@@ -46,5 +53,16 @@ public class BookService {
 
     public List<Book> findAllByAuthorLastName(String name) {
         return jpaBookRepository.findByAuthors_personalData_lastNameContaining(name);
+    }
+
+    public void saveTest() {
+        Book b = new Book("Clean Code");
+        PersonalData pd = new PersonalData("Bob", "Martin", new Date());
+        Author a = new Author(pd);
+        authorRepository.save(a);
+        HashSet<Author> authors = new HashSet<>();
+        authors.add(a);
+        b.setAuthors(authors);
+        jpaBookRepository.save(b);
     }
 }
