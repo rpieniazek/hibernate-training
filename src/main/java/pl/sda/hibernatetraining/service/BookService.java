@@ -62,7 +62,15 @@ public class BookService {
         }
     }
 
-    public List<Book> findWithYearGreaterThan(Long year){
+    public List<Book> findWithYearGreaterThan(Long year) {
         return bookRepository.findWithYearBiggerThan(year);
+    }
+
+    public List<Book> findByLibraryName(String libraryPrefix) {
+        return bookRepository.findByLibraryName(libraryPrefix);
+    }
+
+    public Long countWithTitleLike(String titlePrefix) {
+        return bookRepository.countWithTitleLike(titlePrefix);
     }
 }

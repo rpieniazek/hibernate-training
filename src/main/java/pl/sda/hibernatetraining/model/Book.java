@@ -15,6 +15,8 @@ public class Book implements Serializable {
 
     public static final String AUTHORS = "authors";
 
+    public static final String LIBRARY = "library";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

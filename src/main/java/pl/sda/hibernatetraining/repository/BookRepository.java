@@ -3,6 +3,7 @@ package pl.sda.hibernatetraining.repository;
 import org.springframework.stereotype.Repository;
 import pl.sda.hibernatetraining.model.Author;
 import pl.sda.hibernatetraining.model.Book;
+import pl.sda.hibernatetraining.model.Library;
 import pl.sda.hibernatetraining.model.PersonalData;
 
 import javax.persistence.EntityManager;
@@ -10,7 +11,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,11 +89,26 @@ public class BookRepository {
 
     //znalezc ksiazki, z biblioteki o podanej nazwie
     public List<Book> findByLibraryName(String libraryName) {
-        return new ArrayList<>();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Book> query = criteriaBuilder.createQuery(Book.class);
+
+        Root<Book> books = query.from(Book.class);
+        Join<Book, Library> join = books.join("library");
+
+        Predicate predicate = criteriaBuilder.like(join.get("name"), libraryName + "%");
+        query.where(predicate);
+
+        return entityManager.createQuery(query).getResultList();
     }
 
     //wypisac ilosc ksiazek, ktorych tytul zaczyna sie na litere ’S’
     public Long countWithTitleLike(String titlePrefix) {
-        return 0L;
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        Root<Book> book = query.from(Book.class);
+
+        query.select(criteriaBuilder.count(book));
+        query.where(criteriaBuilder.like(book.get(Book.TITLE_PROPERTY), titlePrefix));
+        return entityManager.createQuery(query).getSingleResult();
     }
 }

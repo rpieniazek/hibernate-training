@@ -15,7 +15,8 @@ public class HibernateTrainingApplication {
 
     @PostConstruct
     private void init() {
-       bookService.findWithYearGreaterThan(2000L).forEach(book -> System.out.println(book.getTitle()));
+//       bookService.findByLibraryName("Sie").forEach(book -> System.out.println(book.getTitle()));
+        System.out.println(bookService.countWithTitleLike("W pustyni"));
     }
 
     public static void main(String[] args) {
