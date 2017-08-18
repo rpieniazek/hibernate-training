@@ -25,7 +25,7 @@ public class BookRepository {
     }
 
     public Optional<Book> findById(Long id) {
-        return Optional.of(entityManager.find(Book.class, id));
+        return Optional.ofNullable(entityManager.find(Book.class, id)) ;
     }
 
     public List<Book> findByPartialTitle(String title) {
@@ -62,5 +62,13 @@ public class BookRepository {
         CriteriaQuery<Book> all = cq.select(rootEntry);
         TypedQuery<Book> allQuery = entityManager.createQuery(all);
         return allQuery.getResultList();
+    }
+
+    public Long count() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+
+        CriteriaQuery<Long> result = query.select(criteriaBuilder.count(query.from(Book.class)));
+        return entityManager.createQuery(result).getSingleResult();
     }
 }

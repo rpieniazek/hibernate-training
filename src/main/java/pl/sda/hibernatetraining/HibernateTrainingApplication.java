@@ -3,11 +3,9 @@ package pl.sda.hibernatetraining;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import pl.sda.hibernatetraining.model.Book;
 import pl.sda.hibernatetraining.service.BookService;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 
 @SpringBootApplication
 public class HibernateTrainingApplication {
@@ -17,8 +15,7 @@ public class HibernateTrainingApplication {
 
     @PostConstruct
     private void init() {
-        List<Book> books = bookService.findByAuthorLastName("Sien");
-        books.forEach(book -> System.out.println(book.getTitle()));
+       bookService.printBooksAuthor(2l);
     }
 
     public static void main(String[] args) {

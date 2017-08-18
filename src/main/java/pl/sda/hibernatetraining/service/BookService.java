@@ -32,5 +32,29 @@ public class BookService {
         return bookRepository.findByAuthorLastName(author);
     }
 
+    public Long count() {
+        return bookRepository.count();
+    }
 
+    public void updateBook() {
+        Optional<Book> maybeBook = findById(2l);
+
+        maybeBook.ifPresent(this::changeTitle);
+    }
+
+    private void changeTitle(Book book) {
+        System.out.println(book.getTitle());
+        book.setTitle("title changed");
+        save(book);
+    }
+
+    public void printBooksAuthor(Long id){
+        Optional<Book> maybeBook = findById(id);
+
+        if(maybeBook.isPresent()){
+            Book book = maybeBook.get();
+            System.out.println("In the middle");
+            book.getAuthors().forEach(author -> System.out.println(author.getPersonalData()));
+        }
+    }
 }
