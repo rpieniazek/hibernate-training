@@ -24,6 +24,10 @@ public class BookService {
         return bookRepository.findById(id);
     }
 
+    public List<Book> findAll() {
+        return bookRepository.findAll();
+    }
+
     public List<Book> findByPartialTitle(String title) {
         return bookRepository.findByPartialTitle(title);
     }
@@ -48,13 +52,17 @@ public class BookService {
         save(book);
     }
 
-    public void printBooksAuthor(Long id){
+    public void printBooksAuthor(Long id) {
         Optional<Book> maybeBook = findById(id);
 
-        if(maybeBook.isPresent()){
+        if (maybeBook.isPresent()) {
             Book book = maybeBook.get();
             System.out.println("In the middle");
             book.getAuthors().forEach(author -> System.out.println(author.getPersonalData()));
         }
+    }
+
+    public List<Book> findWithYearGreaterThan(Long year){
+        return bookRepository.findWithYearBiggerThan(year);
     }
 }

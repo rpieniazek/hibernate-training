@@ -15,7 +15,7 @@ public class HibernateTrainingApplication {
 
     @PostConstruct
     private void init() {
-       bookService.printBooksAuthor(2l);
+       bookService.findWithYearGreaterThan(2000L).forEach(book -> System.out.println(book.getTitle()));
     }
 
     public static void main(String[] args) {
