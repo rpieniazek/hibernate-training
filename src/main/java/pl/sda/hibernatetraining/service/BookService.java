@@ -2,7 +2,9 @@ package pl.sda.hibernatetraining.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.sda.hibernatetraining.dto.BookDto;
 import pl.sda.hibernatetraining.model.Book;
+import pl.sda.hibernatetraining.repository.BookJooqDao;
 import pl.sda.hibernatetraining.repository.BookRepository;
 import pl.sda.hibernatetraining.repository.IBookRepository;
 
@@ -19,6 +21,9 @@ public class BookService {
 
     @Autowired
     private IBookRepository jpaBookRepository;
+
+    @Autowired
+    private BookJooqDao bookJooqDao;
 
 
     public void save(Book book) {
@@ -82,5 +87,9 @@ public class BookService {
 
     public Long countWithTitleLike(String titlePrefix) {
         return bookRepository.countWithTitleLike(titlePrefix);
+    }
+
+    public BookDto findBookDtoById(Long id) {
+        return bookJooqDao.findById(id);
     }
 }
