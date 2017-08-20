@@ -29,6 +29,10 @@ public class BookService {
         return bookRepository.findById(id);
     }
 
+    public List<Book> findAll() {
+        return bookRepository.findAll();
+    }
+
     public List<Book> findByPartialTitle(String title) {
         return bookRepository.findByPartialTitle(title);
     }
@@ -37,14 +41,46 @@ public class BookService {
         return bookRepository.findByAuthorLastName(author);
     }
 
-    public List<Book> findAll() {
-        List<Book> all = jpaBookRepository.findAll();
-        all.forEach(b -> b.getAuthors().forEach(author -> System.out.println(author.getNickName())));
-
-        return all;
-    }
 
     public List<Book> findAllByAuthorLastName(String name) {
         return jpaBookRepository.findByAuthors_personalData_lastNameContaining(name);
+    }
+
+    public Long count() {
+        return bookRepository.count();
+    }
+
+    public void updateBook() {
+        Optional<Book> maybeBook = findById(2l);
+
+        maybeBook.ifPresent(this::changeTitle);
+    }
+
+    private void changeTitle(Book book) {
+        System.out.println(book.getTitle());
+        book.setTitle("title changed");
+        save(book);
+    }
+
+    public void printBooksAuthor(Long id) {
+        Optional<Book> maybeBook = findById(id);
+
+        if (maybeBook.isPresent()) {
+            Book book = maybeBook.get();
+            System.out.println("In the middle");
+            book.getAuthors().forEach(author -> System.out.println(author.getPersonalData()));
+        }
+    }
+
+    public List<Book> findWithYearGreaterThan(Long year) {
+        return bookRepository.findWithYearBiggerThan(year);
+    }
+
+    public List<Book> findByLibraryName(String libraryPrefix) {
+        return bookRepository.findByLibraryName(libraryPrefix);
+    }
+
+    public Long countWithTitleLike(String titlePrefix) {
+        return bookRepository.countWithTitleLike(titlePrefix);
     }
 }

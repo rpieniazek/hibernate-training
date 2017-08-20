@@ -38,4 +38,13 @@ public class PersonalData {
     public Date getBirthDate() {
         return birthDate;
     }
+
+    @Override
+    public String toString() {
+        return "PersonalData{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthDate=" + birthDate +
+                '}';
+    }
 }
