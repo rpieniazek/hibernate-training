@@ -17,7 +17,7 @@ public class HibernateTrainingApplication {
 
     @PostConstruct
     private void init() {
-       bookService.saveTest();
+        bookService.saveTest();
     }
 
     public static void main(String[] args) {

@@ -8,5 +8,4 @@ import java.util.List;
 public interface IBookRepository extends JpaRepository<Book, Long> {
 
     List<Book> findByAuthors_personalData_lastNameContaining(String name);
-
 }
