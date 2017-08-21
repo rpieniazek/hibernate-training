@@ -57,6 +57,14 @@ public class BookService {
         return jpaBookRepository.findByAuthors_personalData_lastNameContaining(name);
     }
 
+    public List<Book> findByLibraryName(String libraryName) {
+        return jpaBookRepository.findByLibrary_nameContaining(libraryName);
+    }
+
+    public Long countWithNameContaing(String title){
+        return jpaBookRepository.countByTitleContaining(title);
+    }
+
     public void saveTest() {
         Book book = new Book("Clean Code");
         PersonalData pd = new PersonalData("Bob", "Martin", new Date());
@@ -69,10 +77,11 @@ public class BookService {
         BookReview bookReview = new BookReview("Great boook! ");
         book.setBookReview(bookReview);
 
-        Library library = new Library("Dubois");
+        jpaBookRepository.save(book);
+
+        Library library = new Library("Dubois2");
+        library.addBook(book);
         libraryRepository.save(library);
 
-        library.addBook(book);
-        jpaBookRepository.save(book);
     }
 }
