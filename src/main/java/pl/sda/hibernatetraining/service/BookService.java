@@ -6,6 +6,7 @@ import pl.sda.hibernatetraining.model.*;
 import pl.sda.hibernatetraining.repository.BookRepository;
 import pl.sda.hibernatetraining.repository.IAuthorRepository;
 import pl.sda.hibernatetraining.repository.IBookRepository;
+import pl.sda.hibernatetraining.repository.LibraryRepository;
 
 import javax.transaction.Transactional;
 import java.util.Date;
@@ -25,6 +26,9 @@ public class BookService {
 
     @Autowired
     private IAuthorRepository authorRepository;
+
+    @Autowired
+    private LibraryRepository libraryRepository;
 
     public void save(Book book) {
         jpaBookRepository.save(book);
@@ -64,6 +68,11 @@ public class BookService {
 
         BookReview bookReview = new BookReview("Great boook! ");
         book.setBookReview(bookReview);
+
+        Library library = new Library("Dubois");
+        libraryRepository.save(library);
+
+        library.addBook(book);
         jpaBookRepository.save(book);
     }
 }
