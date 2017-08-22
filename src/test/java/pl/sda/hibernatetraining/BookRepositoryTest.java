@@ -5,9 +5,11 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.sda.hibernatetraining.model.Author;
 import pl.sda.hibernatetraining.model.Book;
+import pl.sda.hibernatetraining.model.Library;
 import pl.sda.hibernatetraining.model.PersonalData;
 import pl.sda.hibernatetraining.repository.BookRepository;
 import pl.sda.hibernatetraining.repository.IAuthorRepository;
+import pl.sda.hibernatetraining.repository.LibraryRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -20,11 +22,15 @@ import static org.junit.Assert.assertTrue;
 
 public class BookRepositoryTest extends DatabaseTest {
 
+    public static final String LIBRARY_NAME = "Sienkiewicza";
     @Autowired
     private BookRepository bookRepository;
 
     @Autowired
     private IAuthorRepository authorRepository;
+
+    @Autowired
+    private LibraryRepository libraryRepository;
 
     @Test
     public void shouldFindAllBooks() {
@@ -92,6 +98,32 @@ public class BookRepositoryTest extends DatabaseTest {
         assertEquals(AUTHOR_LAST_NAME, lastName.get());
     }
 
+    @Test
+    public void shouldFindByLibraryName() throws Exception {
+        //given
+        createAndSaveBookWithLibrary();
+        createAndSaveBook("Title", 2000);
+
+        //when
+        List<Book> books = bookRepository.findByLibraryName(LIBRARY_NAME);
+
+        //then
+        assertEquals(1, books.size());
+        Book book = books.get(0);
+        assertEquals(LIBRARY_NAME, book.getLibrary().getName());
+        assertEquals(BOOK_TITLE, book.getTitle());
+    }
+
+
+    @Test
+    public void shouldCountWithTitleLike() throws Exception {
+        //given
+
+        //when
+
+        //then
+    }
+
     private void saveBookWithAuthor() {
         Book b = new Book(BOOK_TITLE);
         PersonalData pd = new PersonalData(AUTHOR_FIRST_NAME, AUTHOR_LAST_NAME, new Date());
@@ -106,5 +138,14 @@ public class BookRepositoryTest extends DatabaseTest {
         book.setTitle(title);
         book.setYear(year);
         bookRepository.save(book);
+    }
+
+    private void createAndSaveBookWithLibrary() {
+        Book book = new Book(BOOK_TITLE);
+        bookRepository.save(book);
+
+        Library library = new Library(LIBRARY_NAME);
+        library.addBook(book);
+        libraryRepository.save(library);
     }
 }
