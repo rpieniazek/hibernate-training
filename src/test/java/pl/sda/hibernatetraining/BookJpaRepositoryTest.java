@@ -44,4 +44,9 @@ public class BookJpaRepositoryTest extends DatabaseTest {
         assertEquals(1, books.size());
         assertEquals(BOOK_TITLE, books.iterator().next().getTitle());
     }
+
+    @Test
+    public void shouldCountBooks() throws Exception {
+
+    }
 }

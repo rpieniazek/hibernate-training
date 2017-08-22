@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 @TestPropertySource(locations = "classpath:test.properties")
 @Transactional
 @Rollback
-public class DatabaseTest {
+public abstract class DatabaseTest {
 
 
 }
