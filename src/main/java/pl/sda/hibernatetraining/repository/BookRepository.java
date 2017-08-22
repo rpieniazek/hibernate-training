@@ -86,8 +86,6 @@ public class BookRepository {
         return entityManager.createQuery(result).getSingleResult();
     }
 
-
-    //znalezc ksiazki, z biblioteki o podanej nazwie
     public List<Book> findByLibraryName(String libraryName) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Book> query = criteriaBuilder.createQuery(Book.class);
@@ -101,7 +99,6 @@ public class BookRepository {
         return entityManager.createQuery(query).getResultList();
     }
 
-    //wypisac ilosc ksiazek, ktorych tytul zaczyna sie na litere ’S’
     public Long countWithTitleLike(String titlePrefix) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);

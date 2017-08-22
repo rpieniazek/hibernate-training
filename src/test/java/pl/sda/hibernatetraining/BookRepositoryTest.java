@@ -118,10 +118,15 @@ public class BookRepositoryTest extends DatabaseTest {
     @Test
     public void shouldCountWithTitleLike() throws Exception {
         //given
+        createAndSaveBook(BOOK_TITLE, 2000);
+        createAndSaveBook(BOOK_TITLE, 2000);
+        createAndSaveBook("another", 2000);
 
         //when
+        long count = bookRepository.countWithTitleLike(BOOK_TITLE);
 
         //then
+        assertEquals(2L, count);
     }
 
     private void saveBookWithAuthor() {
