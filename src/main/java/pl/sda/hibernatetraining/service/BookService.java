@@ -1,6 +1,7 @@
 package pl.sda.hibernatetraining.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.sda.hibernatetraining.model.*;
 import pl.sda.hibernatetraining.repository.BookRepository;
@@ -53,6 +54,14 @@ public class BookService {
         return all;
     }
 
+    public List<Book> findByBookReviewIsNull() {
+        return jpaBookRepository.findByBookReviewIsNull();
+    }
+
+    public List<Book> findAllPaginated(int page, int size) {
+        return jpaBookRepository.findAll(new PageRequest(page, size)).getContent();
+    }
+
     public List<Book> findAllByAuthorLastName(String name) {
         return jpaBookRepository.findByAuthors_personalData_lastNameContaining(name);
     }
@@ -61,7 +70,7 @@ public class BookService {
         return jpaBookRepository.findByLibrary_nameContaining(libraryName);
     }
 
-    public Long countWithNameContaing(String title){
+    public Long countWithNameContaing(String title) {
         return jpaBookRepository.countByTitleContaining(title);
     }
 

@@ -14,4 +14,7 @@ public interface IBookRepository extends JpaRepository<Book, Long> {
 
     //wypisac ilosc ksiazek, ktorych tytul zawiera podany fragment’
     Long countByTitleContaining(String title);
+
+    //wypisac wszystkie ksiazki, ktore nie maja review
+    List<Book> findByBookReviewIsNull();
 }

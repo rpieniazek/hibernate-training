@@ -17,9 +17,8 @@ public class HibernateTrainingApplication {
 
     @PostConstruct
     private void init() {
-//        List<Book> booksList = bookService.findByLibraryName("Sienkiewicza");
+        bookService.findByBookReviewIsNull();
 //        booksList.forEach(book -> System.out.println(book.getTitle()));
-        System.out.println(bookService.countWithNameContaing("Cl"));
     }
 
     public static void main(String[] args) {
