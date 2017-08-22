@@ -85,7 +85,7 @@ public class Book implements Serializable {
     }
 
     public void setBookReview(BookReview bookReview) {
-
+        this.bookReview = bookReview;
         if (bookReview != null) {
             bookReview.setBook(this);
         }
