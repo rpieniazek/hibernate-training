@@ -11,10 +11,12 @@ import pl.sda.hibernatetraining.repository.IAuthorRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class BookRepositoryTest extends DatabaseTest {
 
@@ -77,14 +79,22 @@ public class BookRepositoryTest extends DatabaseTest {
 
         //then
         assertEquals(1, books.size());
-        Book book = books.iterator().next();
 
-        assertEquals(book.getTitle(),BOOK_TITLE);
+        Book book = books.iterator().next();
+        assertEquals(book.getTitle(), BOOK_TITLE);
+
+        Optional<String> lastName = book.getAuthors().stream()
+                .map(Author::getPersonalData)
+                .map(PersonalData::getLastName)
+                .findFirst();
+
+        assertTrue(lastName.isPresent());
+        assertEquals(AUTHOR_LAST_NAME, lastName.get());
     }
 
     private void saveBookWithAuthor() {
         Book b = new Book(BOOK_TITLE);
-        PersonalData pd = new PersonalData("Bob", AUTHOR_LAST_NAME, new Date());
+        PersonalData pd = new PersonalData(AUTHOR_FIRST_NAME, AUTHOR_LAST_NAME, new Date());
         Author a = new Author(pd);
         authorRepository.save(a);
         b.addAuthor(a);
