@@ -3,9 +3,13 @@ package pl.sda.hibernatetraining;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import pl.sda.hibernatetraining.model.Author;
 import pl.sda.hibernatetraining.model.Book;
+import pl.sda.hibernatetraining.model.PersonalData;
 import pl.sda.hibernatetraining.repository.BookRepository;
+import pl.sda.hibernatetraining.repository.IAuthorRepository;
 
+import java.util.Date;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -16,6 +20,9 @@ public class BookRepositoryTest extends DatabaseTest {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private IAuthorRepository authorRepository;
 
     @Test
     public void shouldFindAllBooks() {
@@ -43,7 +50,6 @@ public class BookRepositoryTest extends DatabaseTest {
     @Test
     public void shouldFindWithYearBiggerThan() throws Exception {
         //given
-
         String firstBookTitle = "bbb";
         String secondBookTitle = "ccc";
 
@@ -60,6 +66,29 @@ public class BookRepositoryTest extends DatabaseTest {
 
         Assert.assertThat(titles, hasItem(firstBookTitle));
         Assert.assertThat(titles, hasItem(secondBookTitle));
+    }
+
+    @Test
+    public void shouldFindByAuthorLastName() throws Exception {
+        //given
+        saveBookWithAuthor();
+        //when
+        List<Book> books = bookRepository.findByAuthorLastName(AUTHOR_LAST_NAME);
+
+        //then
+        assertEquals(1, books.size());
+        Book book = books.iterator().next();
+
+        assertEquals(book.getTitle(),BOOK_TITLE);
+    }
+
+    private void saveBookWithAuthor() {
+        Book b = new Book(BOOK_TITLE);
+        PersonalData pd = new PersonalData("Bob", AUTHOR_LAST_NAME, new Date());
+        Author a = new Author(pd);
+        authorRepository.save(a);
+        b.addAuthor(a);
+        bookRepository.save(b);
     }
 
     private void createAndSaveBook(String title, int year) {

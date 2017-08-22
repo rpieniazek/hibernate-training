@@ -16,8 +16,6 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class BookJpaRepositoryTest extends DatabaseTest {
-    public static final String AUTHOR_LAST_NAME = "Martin";
-    public static final String BOOK_TITLE = "Clean Code";
 
     @Autowired
     private IBookRepository bookRepository;
@@ -39,7 +37,6 @@ public class BookJpaRepositoryTest extends DatabaseTest {
 
     @Test
     public void shouldFindByAuthorName() throws Exception {
-
         List<Book> books = bookRepository.findByAuthors_personalData_lastNameContaining(AUTHOR_LAST_NAME.substring(0, 2));
         assertEquals(1, books.size());
         assertEquals(BOOK_TITLE, books.iterator().next().getTitle());
@@ -47,6 +44,6 @@ public class BookJpaRepositoryTest extends DatabaseTest {
 
     @Test
     public void shouldCountBooks() throws Exception {
-
+        //todo implement
     }
 }
