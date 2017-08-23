@@ -7,6 +7,8 @@ import java.util.Set;
 
 
 @Entity
+@Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "genre", discriminatorType = DiscriminatorType.STRING)
 public class Book implements Serializable {
 
     public static final String TITLE_PROPERTY = "title";
@@ -38,6 +40,7 @@ public class Book implements Serializable {
     private Library library;
 
     @Enumerated(EnumType.STRING)
+    @Column(insertable = false, updatable = false)
     private Genre genre;
 
     @Column(name = "book_year")

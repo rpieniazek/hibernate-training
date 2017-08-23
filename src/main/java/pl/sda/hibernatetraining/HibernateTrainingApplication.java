@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import pl.sda.hibernatetraining.dto.BookDto;
 import pl.sda.hibernatetraining.service.BookService;
 
 import javax.annotation.PostConstruct;
@@ -27,7 +28,9 @@ public class HibernateTrainingApplication {
 
     @PostConstruct
     private void init() {
-        bookService.findBookDtoById(2l);
+        BookDto bookDto = bookService.findBookDtoById(2l);
+        System.out.println(bookDto.getTitle());
+        System.out.println(bookDto.getId());
     }
 
     public static void main(String[] args) {
