@@ -14,6 +14,9 @@ import javax.transaction.Transactional;
 @Transactional
 @Rollback
 public class DatabaseTest {
+    protected static final String AUTHOR_LAST_NAME = "Martin";
+    protected static final String BOOK_TITLE = "Clean Code";
+    protected static final String AUTHOR_FIRST_NAME = "Bob";
 
 
 }

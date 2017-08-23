@@ -5,8 +5,11 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.sda.hibernatetraining.DatabaseTest;
 import pl.sda.hibernatetraining.dto.BookDto;
+import pl.sda.hibernatetraining.model.Author;
 import pl.sda.hibernatetraining.model.Book;
+import pl.sda.hibernatetraining.model.PersonalData;
 
+import java.util.Date;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -20,6 +23,9 @@ public class BookJooqDaoTest extends DatabaseTest {
 
     @Autowired
     private IBookRepository bookJPARepository;
+
+    @Autowired
+    private IAuthorRepository authorRepository;
 
     @Test
     public void shouldSaveBook() throws Exception {
@@ -54,7 +60,25 @@ public class BookJooqDaoTest extends DatabaseTest {
 
     @Test
     public void shouldFindByAuthorLastName() throws Exception {
-        bookJooqDao.findByAuthorLastName();
+
+        //given
+        saveBookWithAuthor();
+        //when
+        List<BookDto> books = bookJooqDao.findByAuthorLastName(AUTHOR_LAST_NAME);
+
+        //then
+        assertEquals(1, books.size());
+
+        BookDto book = books.iterator().next();
+        assertEquals(book.getTitle(), BOOK_TITLE);
+
+//        Optional<String> lastName = book.getAuthors().stream()
+//                .map(Author::getPersonalData)
+//                .map(PersonalData::getLastName)
+//                .findFirst();
+//
+//        assertTrue(lastName.isPresent());
+//        assertEquals(AUTHOR_LAST_NAME, lastName.get());
     }
 
     private void createAndSaveBook(String title, int year) {
@@ -62,5 +86,15 @@ public class BookJooqDaoTest extends DatabaseTest {
         book.setTitle(title);
         book.setYear(year);
         bookJPARepository.save(book);
+    }
+
+    private void saveBookWithAuthor() {
+        Book b = new Book(BOOK_TITLE);
+        PersonalData pd = new PersonalData(AUTHOR_FIRST_NAME, AUTHOR_LAST_NAME, new Date());
+        Author a = new Author(pd);
+        authorRepository.save(a);
+        b.addAuthor(a);
+        bookJPARepository.save(b);
+        bookJPARepository.flush();
     }
 }

@@ -5,12 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import pl.sda.hibernatetraining.dto.BookDto;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+import static pl.sda.hibernatetraining.tables.Tables.AUTHOR;
 import static pl.sda.hibernatetraining.tables.Tables.BOOK;
+import static pl.sda.hibernatetraining.tables.Tables.BOOK_AUTHOR;
 
 
 @Repository
+@Transactional
 public class BookJooqDao {
 
     @Autowired
@@ -36,7 +40,12 @@ public class BookJooqDao {
                 .fetchInto(BookDto.class);
     }
 
-    public void findByAuthorLastName() {
-        //todo implement
+    public List<BookDto> findByAuthorLastName(String lastName) {
+        return dsl.select().from(BOOK)
+                .join(BOOK_AUTHOR).on(BOOK.ID.eq(BOOK_AUTHOR.BOOK_ID))
+                .join(AUTHOR).on(BOOK_AUTHOR.AUTHOR_ID.eq(AUTHOR.ID))
+                .where(AUTHOR.LAST_NAME.like(lastName))
+                .fetchInto(BookDto.class);
     }
+
 }
