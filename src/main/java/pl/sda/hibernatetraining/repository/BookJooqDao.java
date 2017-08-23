@@ -20,4 +20,11 @@ public class BookJooqDao {
                 .where(BOOK.ID.eq(id))
                 .fetchOneInto(BookDto.class);
     }
+
+    public void save(BookDto book) {
+        dsl.insertInto(BOOK, BOOK.TITLE, BOOK.VERSION, BOOK.BOOK_YEAR)
+                .values(book.getTitle(), 0L, book.getYear())
+                .execute();
+    }
+
 }

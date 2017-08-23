@@ -27,7 +27,9 @@ public class HibernateTrainingApplication {
 
     @PostConstruct
     private void init() {
-        bookService.findBookDtoById(2l);
+//        BookDto bookDtoById = bookService.findBookDtoById(2l);
+//        System.out.println(bookDtoById.getId());
+//        System.out.println(bookDtoById.getTitle());
     }
 
     public static void main(String[] args) {
