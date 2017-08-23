@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import pl.sda.hibernatetraining.dto.BookDto;
 
+import java.util.List;
+
 import static pl.sda.hibernatetraining.tables.Tables.BOOK;
 
 
@@ -27,4 +29,14 @@ public class BookJooqDao {
                 .execute();
     }
 
+
+    public List<BookDto> findWithBookGreaterThan(int year) {
+        return dsl.selectFrom(BOOK)
+                .where(BOOK.BOOK_YEAR.ge(year))
+                .fetchInto(BookDto.class);
+    }
+
+    public void findByAuthorLastName() {
+        //todo implement
+    }
 }
