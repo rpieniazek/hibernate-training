@@ -47,7 +47,7 @@ public class Library {
 
   public void addBook(Book book) {
 
-    book.setLibrary(this);
+//    book.setLibrary(this);
     this.books.add(book);
   }
 

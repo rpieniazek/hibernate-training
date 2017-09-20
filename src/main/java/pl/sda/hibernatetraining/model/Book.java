@@ -1,22 +1,25 @@
 package pl.sda.hibernatetraining.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
+@Entity
 public class Book implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String title;
 
-    private Set<Author> authors = new HashSet<>();
+    @OneToOne(cascade = CascadeType.ALL)
+    private Author author;
 
-    private BookReview bookReview;
-
-    private Library library;
-
-    private long version;
+//    private BookReview bookReview;
+//
+//    private Library library;
+//
+//    private long version;
 
     // for hibernate
     protected Book() {
@@ -31,46 +34,19 @@ public class Book implements Serializable {
         this.id = id;
     }
 
-    public Long getId() {
-        return id;
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public Author getAuthor() {
+        return author;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public Set<Author> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(Set<Author> authors) {
-        this.authors = authors;
-    }
-
-    public BookReview getBookReview() {
-        return bookReview;
-    }
-
-    public void setBookReview(BookReview bookReview) {
-        if (bookReview != null) {
-            bookReview.setBook(this);
-        }
-        this.bookReview = bookReview;
-    }
-
-    public long getVersion() {
-        return version;
-    }
-
-    public void setVersion(long version) {
-        this.version = version;
-    }
-
-    public Library getLibrary() {
-        return library;
-    }
-
-    public void setLibrary(Library library) {
-        this.library = library;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

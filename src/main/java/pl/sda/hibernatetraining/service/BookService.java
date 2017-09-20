@@ -27,4 +27,19 @@ public class BookService {
     public List<Book> findByPartialTitle(String title) {
         return bookRepository.findByPartialTitle(title);
     }
+
+    public void update() {
+        //pobranie
+        Book book = findById(1L).get();
+        System.out.println(book.getTitle());
+        System.out.println(book.getAuthor().getNickName());
+
+        //modyfikacja
+        book.setTitle("New title");
+
+        book.getAuthor().setNickName("New NickName");
+
+        //zapis
+        save(book);
+    }
 }
